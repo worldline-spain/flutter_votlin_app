@@ -1,0 +1,26 @@
+{
+  "name": "Kotlin. un lenguaje para dominarlos a todos",
+  "id": 37,
+  "description": "En esta charla veremos como, con poquísimo dinero, podemos automatizar nuestra casa por completo, de una forma rapidísima y entretenida... Para los dispositivos, el ESP12, para el teléfono, Android, para el backend.. PHP!! y para culminarlo todo... Asistentes de voz! (Habrá demo y todo 🙂 )",
+  "track": "DEVELOPMENT",
+  "time": {
+    "start": 1540654200000,
+    "end": 1540656900000
+  },
+  "speakers": [
+    {
+      "twitter": "https://twitter.com/sergioch23",
+      "linkedin": "https://www.linkedin.com/in/sergiocasero/",
+      "name": "Sergio Casero Hernández",
+      "bio": "Sergio: Tengo 28 años, soy desarrollador de Android desde hace más de 4 años, y llevo trabajando con Kotlin desde 2015. Actualmente trabajo como Senior Android Engineer en Worldline Iberia. Amante del Software en general y de Android + IoT en particular. Arduino FTW!",
+      "photoUrl": "https://www.extremaduradigitalday.com/wp-content/uploads/bb-plugin/cache/sergio-casero-square.jpeg"
+    },
+    {
+      "twitter": "https://twitter.com/dany4794",
+      "linkedin": "https://www.linkedin.com/in/dallanosm/",
+      "name": "Daniel Llanos Muñoz",
+      "bio": "Dani: Me considero una persona creativa, buscando nuevos proyectos en todo momento. Siento que hay que estar siempre actualizándose en este mundo de desarrollo tan cambiante. Me encanta ir a eventos tanto a aprender cómo a divulgar. En mis ratos libres aporreo cuerdas.",
+      "photoUrl": "https://www.extremaduradigitalday.com/wp-content/uploads/bb-plugin/cache/daniel-llanos-square.jpeg"
+    }
+  ]
+}

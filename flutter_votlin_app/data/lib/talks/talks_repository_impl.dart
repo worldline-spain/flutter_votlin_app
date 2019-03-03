@@ -1,4 +1,3 @@
-import 'package:data/talks/datasource/network/talks_network_datasource.dart';
 import 'package:data/talks/datasource/talks_datasources.dart';
 import 'package:domain/model/models.dart';
 import 'package:domain/repository/talks_repository.dart';
