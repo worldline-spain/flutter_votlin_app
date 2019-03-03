@@ -43,7 +43,7 @@ A nice experiment to evaluate the package [sqflite](https://pub.dartlang.org/pac
 
 Interesting points:
 - To make it easier, there is a SqliteHelper [here](lib/core/database/sqlite_helper.dart)
-- Sqlite tables are defined [here](lib/core/sqlite_tables.dart)
+- Sqlite tables are defined [here](lib/core/database/sqlite_tables.dart)
 - Implementation of datasource is [here](lib/talks/datasource/database)
 
 ## Mappers
