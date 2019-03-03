@@ -3,6 +3,7 @@ import 'package:data/core/network/core_http_client.dart';
 import 'package:data/core/network/dart_http_client.dart';
 import 'package:data/core/database/sqlite_helper.dart';
 import 'package:data/talks/datasource/database/talks_db_datasource.dart';
+import 'package:data/talks/datasource/database/talks_mock_db_datasource.dart';
 import 'package:data/talks/datasource/mock/talks_mock_datasource.dart';
 import 'package:data/talks/datasource/network/talks_network_datasource.dart';
 import 'package:data/talks/datasource/talks_datasources.dart';
@@ -33,16 +34,24 @@ class Injector {
 
   TalksRepository _createTalksRepository() {
     TalksRemoteDataSource talksRemoteDataSource;
-    if (Config.flavor == Flavor.LOCALHOST_EMULATOR) {
+    if ((Config.flavor == Flavor.LOCALHOST_EMULATOR) ||
+        (Config.flavor == Flavor.MOCK_WEBSERVER)) {
       CoreHttpClient coreHttpClient = DartHttpClient();
       talksRemoteDataSource = TalksNetworkDataSource(coreHttpClient);
     } else if (Config.flavor == Flavor.MOCK) {
       talksRemoteDataSource = TalksMockDataSource();
     }
 
+    TalksLocalDataSource talksLocalDataSource;
+    if (Config.flavor == Flavor.MOCK_WEBSERVER) {
+      talksLocalDataSource = TalksMockDbDataSource();
+    } else {
+      talksLocalDataSource = TalksDbDataSource(dbHelper);
+    }
+
     return TalksRepositoryImpl(
       talksRemoteDataSource,
-      TalksDbDataSource(dbHelper),
+      talksLocalDataSource,
     );
   }
 

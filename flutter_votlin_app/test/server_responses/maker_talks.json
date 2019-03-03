@@ -1,0 +1,100 @@
+[
+  {
+    "name": "¿Qué es un fablab?",
+    "id": 4,
+    "description": "",
+    "track": "MAKER",
+    "time": {
+      "start": 1540626000000,
+      "end": 1540628700000
+    },
+    "speakers": [
+      {
+        "twitter": "",
+        "linkedin": "",
+        "name": "Juan Carlos Cano",
+        "bio": "",
+        "photoUrl": ""
+      }
+    ]
+  },
+  {
+    "name": "Charla: Presentación de asociaciones",
+    "id": 10,
+    "description": "",
+    "track": "MAKER",
+    "time": {
+      "start": 1540629000000,
+      "end": 1540631700000
+    },
+    "speakers": []
+  },
+  {
+    "name": "Charla: presentación de proyectos",
+    "id": 16,
+    "description": "",
+    "track": "MAKER",
+    "time": {
+      "start": 1540633500000,
+      "end": 1540636200000
+    },
+    "speakers": []
+  },
+  {
+    "name": "Charla/taller: ¡Todas a codificar!",
+    "id": 22,
+    "description": "Partiendo del preocupeante descenso de mujeres que cursan una educación superior tecnológica, analizaremos el estado de la educación infantil y primaria ¿qué se está haciendo sobre pensamiento computacional? ¿qué es el pensamiento computacional? Compartiré mi experiencia de formación tecnológica con niñas y niños de infantil y primaria ¡un deleite para grandes y chicos! Reflexionaremos sobré qué podemos hacer para empoderar a las mujeres en tecnología.",
+    "track": "MAKER",
+    "time": {
+      "start": 1540637100000,
+      "end": 1540639800000
+    },
+    "speakers": [
+      {
+        "twitter": "https://twitter.com/ougu",
+        "linkedin": "",
+        "name": "Ana Gallardo",
+        "bio": "Actualmente trabajo en la Universidad de Extremadura administrando redes y sistemas. Estudié Ingeniería Informática. Usuaria enamorada del software libre. Apasionada de la educación. Madre de familia numerosa. Feminista. Preocupada por la brecha de género en las ramas tecnológicas de la educación superior.",
+        "photoUrl": "https://www.extremaduradigitalday.com/wp-content/uploads/bb-plugin/cache/ana_gallardo-300x300-square.jpeg"
+      }
+    ]
+  },
+  {
+    "name": "Taller Internet de las Cosas",
+    "id": 28,
+    "description": "Pondremos a la gente a trabajar para realizar un dispositivo IoT capaz de conectarse a la nube para enviar/recibir datos gracias a los dispositivos hardware disponibles en el Smart Open Lab.",
+    "track": "MAKER",
+    "time": {
+      "start": 1540647000000,
+      "end": 1540649700000
+    },
+    "speakers": [
+      {
+        "twitter": "https://twitter.com/mlinaje",
+        "linkedin": "",
+        "name": "Marino Linaje",
+        "bio": "Soy Marino Linaje, profesor e investigador de la Universidad de Extremadura.",
+        "photoUrl": "https://www.extremaduradigitalday.com/wp-content/uploads/bb-plugin/cache/marino-e1532209623156-300x300-square.jpeg"
+      }
+    ]
+  },
+  {
+    "name": "Taller Diseño 3D",
+    "id": 34,
+    "description": "La sesión consistirá en un taller introductorio sobre fundamentos de diseño 3D. La herramienta utilizada será Autodesk Inventor Profesional 2018 (gratuíto con fines académicos y para espacios tipo fablab). Se describirán métodos de diseño de partes y definición de ensamblados. Además se describirán varias aplicaciones reales de diseño 3D a formas funcionales que posteriormente se han fabricado usando impresoras 3D, fresadoras, corte con láser, etc.",
+    "track": "MAKER",
+    "time": {
+      "start": 1540650600000,
+      "end": 1540653300000
+    },
+    "speakers": [
+      {
+        "twitter": "https://twitter.com/agordiguerrero",
+        "linkedin": "https://www.linkedin.com/in/antonio-gordillo-guerrero-8b820b88/",
+        "name": "ANTONIO GORDILLO",
+        "bio": "Profesor del área de Electrónica de la Universidad de Extremadura. Doctor en Física Estadística. Impulsor de Smart Open Lab, el fablab de la Escuela Politécnica de Cáceres. Especialista en software de bajo nivel y diseño electrónico.",
+        "photoUrl": "https://www.extremaduradigitalday.com/wp-content/uploads/2018/06/antonio-gordillo.jpeg"
+      }
+    ]
+  }
+]
