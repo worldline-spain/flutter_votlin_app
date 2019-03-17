@@ -70,5 +70,6 @@ class TalkDetailPresenter extends Presenter<TalkDetailModel> {
   @override
   void destroy() {
     getTalkDetailUseCase.unsubscribe();
+    rateTalkUseCase.unsubscribe();
   }
 }
