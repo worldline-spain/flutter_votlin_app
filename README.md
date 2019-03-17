@@ -36,13 +36,19 @@ http://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
 
 https://fernandocejas.com/2014/09/03/architecting-android-the-clean-way/
 
-In this project we have three modules:
+## Architecture branches
 
-[flutter_votlin_app](/flutter_votlin_app) -> Flutter main module. Also contains the user interface.
+To experiment with project architecture, we are going to implement different approaches in different branches
 
-[domain](/flutter_votlin_app/domain) -> Business layer. Flutter dependences not allowed! Only dart dependencies allowed!
+| Branch        | Description   | 
+| ------------- | ------------- |
+| architecture/multiple_packages_mvp | Multiple packages, model view presenter | 
+| architecture/multiple_packages_scoped_model | Multiple packages, scoped model|
 
-[data](/flutter_votlin_app/data) -> Data sources layer. Flutter dependences not allowed! Only dart dependencies allowed!
+### TODO branches
+  - Single package architecture
+  - Streams
+  - FutureBuilder
 
 ## But... is Clean Architecture the best architecture for Flutter?
 Absolutely not. This is only a petshop project for experiment with Clean Architecture and with Flutter framework.
