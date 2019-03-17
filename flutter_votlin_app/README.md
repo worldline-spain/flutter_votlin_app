@@ -1,39 +1,14 @@
-# Flutter Votlin App
+# Model View Presenter branch (multiple packages)
+In this branch, the domain and data packages are equivalent to other branches implemented with multiple packages architecture, and they are not affected
+by model view presenter implementation.
+In the app package, we have implemented mvp pattern using a custom solution.
 
-It would be fantastic if we find a way to separate the presentation layer into separate package,
-but we have some issues with local assets, so by the moment, the presentation layer is within the
-main module of the project.
+We have defined a abstraction [here](lib/app/core/mvp) to help to reduce boilerplate code
 
-This project is structured in the following way:
-
-[flutter_votlin_app](/flutter_votlin_app) -> Flutter main module. Also contains the user interface.
-
-[domain](domain) -> Business layer. Flutter dependences not allowed! Only dart dependencies allowed!
-
-[data](data) -> Data sources layer. Flutter dependences not allowed! Only dart dependencies allowed
-
-## Flutter main module
-
-### Dependency injection
-Not dagger :) We are using package [get_it](https://pub.dartlang.org/packages/get_it)
-
-We have a injector class to encapsulate dependency injection properly: [Injector](lib/app/core/injection)
-
-### App navigation
-Actually, we are using a simple class with static methods: [AppNavigator](lib/app/core/navigation)
-
-### Styles
-Actually, we have defined the styles here: [Styles](lib/app/styles)
-
-### Internationalization
-TODO
-
-### MVP pattern
-We have defined a abstraction to help to reduce boiler plate in stateful widgets, using the [mvp pattern](lib/app/core/mvp)
 
 ### UI
 For every screen we create a package under [ui package](lib/app/ui).
-The name of package should have a the name of the implemented feature, that can be composed using different screens.
+The name of package should have the name of the implemented feature, that can be composed using different screens.
 
 For every screen, we create 3 files:
 - <screen_name>_screen.dart: Contains a Stateful Widget, based in MVP pattern.
@@ -77,13 +52,7 @@ To understand how it works, take a look to [talk detail](lib/app/ui/talk_detail/
 We have added some debug traces to help to understand what is happening in the presentation layer.
 Take a look to the logs and look for `print(` to understand it better.
 
-## Domain module
-[More info here](domain)
-
-## Data module
-[More info here](data)
-
-## Limitations
+## Limitations of Model View Presenter pattern
 Actually, there are some boiler plate code that we are trying to reduce with a custom solution.
 It would be good don't use a custom solution, but actually use things like StreamBuilder or
 FutureBuilder has a lot of framework dependency.
