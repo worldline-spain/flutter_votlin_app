@@ -49,6 +49,7 @@ To experiment with project architecture, we are going to implement different app
   - Single package architecture
   - Streams
   - FutureBuilder
+  - States Rebuilder package
 
 ## But... is Clean Architecture the best architecture for Flutter?
 Absolutely not. This is only a petshop project for experiment with Clean Architecture and with Flutter framework.
