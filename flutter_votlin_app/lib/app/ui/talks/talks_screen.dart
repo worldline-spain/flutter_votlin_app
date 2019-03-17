@@ -1,39 +1,50 @@
 import 'package:domain/model/models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_votlin_app/app/core/scoped_model/scoped_model_pattern.dart';
 import 'package:flutter_votlin_app/app/ui/common/common_widgets.dart';
-import 'package:flutter_votlin_app/app/ui/talks/talks_presenter.dart';
-import 'package:flutter_votlin_app/app/core/mvp/mvp_pattern.dart';
+import 'package:flutter_votlin_app/app/ui/talks/talks_model.dart';
 import 'package:flutter_votlin_app/app/ui/talks/talks_widgets.dart';
-
-enum _ViewStates { LOADING_TALKS, SHOW_TALKS, SHOW_ERROR_TALKS }
+import 'package:scoped_model/scoped_model.dart';
 
 class TalksScreen extends StatefulWidget {
   @override
   _TalksState createState() => _TalksState();
 }
 
-class _TalksState extends MvpState<TalksScreen, _ViewStates>
-    with SingleTickerProviderStateMixin
-    implements TalksView {
-  TalksPresenter _presenter;
+class _TalksState extends BaseScopedModelState<TalksScreen> {
+  TalksModel model;
 
   _TalksState() {
-    this._presenter = new TalksPresenter(this);
+    model = TalksModel();
   }
 
   @override
-  Presenter getPresenter() {
-    return _presenter;
+  Widget build(BuildContext context) {
+    return ScopedModel<TalksModel>(
+      model: model,
+      child: _TalksScreenContent(),
+    );
   }
 
   @override
   void onInitState() {
-    _presenter.getAllTalks();
+    model.getAllTalks();
   }
 
   @override
-  Widget onBuild(BuildContext context, _ViewStates currentState) {
-    print('onBuild: ' + currentState.toString());
+  void onDispose() {
+    model.destroy();
+  }
+}
+
+class _TalksScreenContent extends StatefulWidget {
+  @override
+  __TalksScreenContentState createState() => __TalksScreenContentState();
+}
+
+class __TalksScreenContentState extends State<_TalksScreenContent> {
+  @override
+  Widget build(BuildContext context) {
     return DefaultTabController(
         length: 4,
         child: Scaffold(
@@ -45,48 +56,44 @@ class _TalksState extends MvpState<TalksScreen, _ViewStates>
                 Tab(text: "DEVELOPMENT"),
                 Tab(text: "MAKER"),
               ])),
-          body: widgetSelector(currentState),
+          body: widgetSelector(),
         ));
   }
 
-  Widget widgetSelector(_ViewStates currentState) {
-    switch (currentState) {
-      case _ViewStates.LOADING_TALKS:
+  Widget widgetSelector() {
+    return ScopedModelDescendant<TalksModel>(
+        builder: (BuildContext context, Widget child, TalksModel model) {
+      print('onBuild: ' + model.currentState.toString());
+
+      if (model.showLoading) {
         return LoadingWidget();
-      case _ViewStates.SHOW_TALKS:
-        return TabBarView(
-          children: <Widget>[
-            TalkListWidget(
-                talkList: _presenter.model.alltalks,
-                onRefresh: () => _presenter.onTrackSelected(Track.ALL)),
-            TalkListWidget(
-                talkList: _presenter.model.businessTalks,
-                onRefresh: () => _presenter.onTrackSelected(Track.BUSINESS)),
-            TalkListWidget(
-                talkList: _presenter.model.developmentTalks,
-                onRefresh: () => _presenter.onTrackSelected(Track.DEVELOPMENT)),
-            TalkListWidget(
-                talkList: _presenter.model.makerTalks,
-                onRefresh: () => _presenter.onTrackSelected(Track.MAKER))
-          ],
-        );
-      case _ViewStates.SHOW_ERROR_TALKS:
-        return NetworkErrorWidget(onPressed: () => _presenter.getAllTalks());
-    }
+      }
+      if (model.showError) {
+        return NetworkErrorWidget(onPressed: () => model.getAllTalks());
+      }
+
+      return TabBarView(
+        children: <Widget>[
+          TalkListWidget(
+              talkList: model.alltalks,
+              onRefresh: () => model.onTrackSelected(Track.ALL)),
+          TalkListWidget(
+              talkList: model.businessTalks,
+              onRefresh: () => model.onTrackSelected(Track.BUSINESS)),
+          TalkListWidget(
+              talkList: model.developmentTalks,
+              onRefresh: () => model.onTrackSelected(Track.DEVELOPMENT)),
+          TalkListWidget(
+              talkList: model.makerTalks,
+              onRefresh: () => model.onTrackSelected(Track.MAKER))
+        ],
+      );
+    });
   }
 
   @override
-  void showLoading() {
-    rebuild(_ViewStates.LOADING_TALKS);
-  }
-
-  @override
-  void showTalks() {
-    rebuild(_ViewStates.SHOW_TALKS);
-  }
-
-  @override
-  void showError() {
-    rebuild(_ViewStates.SHOW_ERROR_TALKS);
+  void dispose() {
+    super.dispose();
+    TalksModel.of(context).destroy();
   }
 }

@@ -3,16 +3,12 @@ import 'dart:io';
 import 'package:data/core/config/config.dart';
 import 'package:domain/model/models.dart';
 import 'package:flutter_votlin_app/app/core/injection/injector.dart';
-import 'package:flutter_votlin_app/app/ui/talks/talks_presenter.dart';
+import 'package:flutter_votlin_app/app/ui/talks/talks_model.dart';
 import 'package:mock_web_server/mock_web_server.dart';
-import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class MockTalksView extends Mock implements TalksView {}
-
 void main() {
-  TalksView mockTalksView;
-  TalksPresenter talksPresenter;
+  TalksModel talksModel;
   var mockServer;
 
   setUpAll(() async {
@@ -23,44 +19,40 @@ void main() {
   });
 
   setUp(() {
-    mockTalksView = MockTalksView();
-    talksPresenter = TalksPresenter(mockTalksView);
+    talksModel = TalksModel();
   });
 
   test('get all talks success', () async {
     _givenAllTalksResponses(mockServer);
 
-    talksPresenter.getAllTalks();
+    talksModel.getAllTalks();
     await _wait();
 
-    verify(mockTalksView.showLoading()).called(1);
-    verify(mockTalksView.showTalks()).called(1);
-    expect(talksPresenter.model.alltalks, hasLength(38));
-    expect(talksPresenter.model.businessTalks, hasLength(13));
-    expect(talksPresenter.model.developmentTalks, hasLength(15));
-    expect(talksPresenter.model.makerTalks, hasLength(6));
+    expect(talksModel.alltalks, hasLength(38));
+    expect(talksModel.businessTalks, hasLength(13));
+    expect(talksModel.developmentTalks, hasLength(15));
+    expect(talksModel.makerTalks, hasLength(6));
+    expect(talksModel.showTalks, true);
   });
 
   test('get all talks error', () async {
     mockServer.enqueue(httpCode: 401);
 
-    talksPresenter.getAllTalks();
+    talksModel.getAllTalks();
     await _wait();
 
-    verify(mockTalksView.showLoading()).called(1);
-    verify(mockTalksView.showError()).called(1);
+    expect(talksModel.showError, true);
   });
 
   test('get talks from track ALL success', () async {
     mockServer.enqueue(
         body: File('test/server_responses/all_talks.json').readAsStringSync());
 
-    talksPresenter.onTrackSelected(Track.ALL);
+    talksModel.onTrackSelected(Track.ALL);
     await _wait();
 
-    verify(mockTalksView.showLoading()).called(1);
-    verify(mockTalksView.showTalks()).called(1);
-    expect(talksPresenter.model.alltalks, isNotEmpty);
+    expect(talksModel.alltalks, isNotEmpty);
+    expect(talksModel.showTalks, true);
   });
 
   test('get talks from track BUSINESS success', () async {
@@ -68,12 +60,11 @@ void main() {
         body: File('test/server_responses/business_talks.json')
             .readAsStringSync());
 
-    talksPresenter.onTrackSelected(Track.BUSINESS);
+    talksModel.onTrackSelected(Track.BUSINESS);
     await _wait();
 
-    verify(mockTalksView.showLoading()).called(1);
-    verify(mockTalksView.showTalks()).called(1);
-    expect(talksPresenter.model.businessTalks, isNotEmpty);
+    expect(talksModel.businessTalks, isNotEmpty);
+    expect(talksModel.showTalks, true);
   });
 
   test('get talks from track DEVELOPMENT success', () async {
@@ -81,12 +72,11 @@ void main() {
         body: File('test/server_responses/business_talks.json')
             .readAsStringSync());
 
-    talksPresenter.onTrackSelected(Track.DEVELOPMENT);
+    talksModel.onTrackSelected(Track.DEVELOPMENT);
     await _wait();
 
-    verify(mockTalksView.showLoading()).called(1);
-    verify(mockTalksView.showTalks()).called(1);
-    expect(talksPresenter.model.developmentTalks, isNotEmpty);
+    expect(talksModel.developmentTalks, isNotEmpty);
+    expect(talksModel.showTalks, true);
   });
 
   test('get talks from track MAKER success', () async {
@@ -94,12 +84,11 @@ void main() {
         body:
             File('test/server_responses/maker_talks.json').readAsStringSync());
 
-    talksPresenter.onTrackSelected(Track.MAKER);
+    talksModel.onTrackSelected(Track.MAKER);
     await _wait();
 
-    verify(mockTalksView.showLoading()).called(1);
-    verify(mockTalksView.showTalks()).called(1);
-    expect(talksPresenter.model.makerTalks, isNotEmpty);
+    expect(talksModel.makerTalks, isNotEmpty);
+    expect(talksModel.showTalks, true);
   });
 
   tearDownAll(() {
@@ -111,36 +100,34 @@ void main() {
   test('get talks from track throws an error', () async {
     mockServer.enqueue(httpCode: 401);
 
-    talksPresenter.onTrackSelected(Track.ALL);
+    talksModel.onTrackSelected(Track.ALL);
     await _wait();
 
-    verify(mockTalksView.showLoading()).called(1);
-    verify(mockTalksView.showError()).called(1);
+    expect(talksModel.showError, true);
   });
 
   test('get all talks cancelled when presenter is destroyed', () async {
     _givenAllTalksResponses(mockServer);
 
-    talksPresenter.getAllTalks();
-    talksPresenter.destroy();
+    talksModel.getAllTalks();
+    talksModel.destroy();
     await _wait();
 
-    verify(mockTalksView.showLoading()).called(1);
-    verifyNever(mockTalksView.showTalks());
-    expect(talksPresenter.model.alltalks, isEmpty);
+    expect(talksModel.alltalks, isEmpty);
+    expect(talksModel.showLoading, true);
   });
 
   test('on track selected cancelled when presenter is destroyed', () async {
     mockServer.enqueue(
         body: File('test/server_responses/all_talks.json').readAsStringSync());
 
-    talksPresenter.onTrackSelected(Track.ALL);
-    talksPresenter.destroy();
+    talksModel.onTrackSelected(Track.ALL);
+    talksModel.destroy();
     await _wait();
 
-    verify(mockTalksView.showLoading()).called(1);
-    verifyNever(mockTalksView.showTalks());
-    expect(talksPresenter.model.alltalks, isEmpty);
+
+    expect(talksModel.alltalks, isEmpty);
+    expect(talksModel.showLoading, true);
   });
 
   tearDownAll(() {

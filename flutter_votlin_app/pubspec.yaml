@@ -21,6 +21,7 @@ dependencies:
   url_launcher: ^4.0.2
   transparent_image: ^0.1.0
   cached_network_image: ^0.5.1
+  scoped_model: ^1.0.1
   domain:
     path: domain
   data:
