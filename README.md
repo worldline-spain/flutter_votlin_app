@@ -44,10 +44,10 @@ To experiment with project architecture, we are going to implement different app
 | ------------- | ------------- |
 | architecture/multiple_packages_mvp | Multiple packages, model view presenter | 
 | architecture/multiple_packages_scoped_model | Multiple packages, scoped model|
+| architecture/multiple_packages_stream_builder | Multiple packages, stream builder|
 
 ### TODO branches
   - Single package architecture
-  - Streams
   - FutureBuilder
   - States Rebuilder package
 
