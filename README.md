@@ -55,6 +55,18 @@ To experiment with project architecture, we are going to implement different app
 Absolutely not. This is only a petshop project for experiment with Clean Architecture and with Flutter framework.
 We don't know what is the best architecture for Flutter. The only way to find it is experimenting!
 
+## Animation branches
+
+To experiment with animations, we are going to create different branches
+
+| Branch        | Description   | 
+| ------------- | ------------- |
+| animations/animated_builder | Experiment with animated builder widget | 
+
+### TODO branches
+  - Flare
+  - Lottie
+
 # How to build and run
 
 ## Building the code
