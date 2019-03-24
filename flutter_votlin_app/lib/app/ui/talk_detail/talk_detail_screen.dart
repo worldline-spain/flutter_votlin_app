@@ -1,36 +1,31 @@
 import 'package:domain/model/models.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_votlin_app/app/core/scoped_model/scoped_model_pattern.dart';
+import 'package:flutter_votlin_app/app/core/stream_builder/stream_builder_pattern.dart';
 import 'package:flutter_votlin_app/app/styles/styles.dart';
 import 'package:flutter_votlin_app/app/ui/common/common_widgets.dart';
 import 'package:flutter_votlin_app/app/ui/talk_detail/talk_detail_model.dart';
 import 'package:flutter_votlin_app/app/ui/talk_detail/talk_detail_widgets.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 class TalkDetailScreen extends StatefulWidget {
+
   final Talk talk;
 
   TalkDetailScreen(this.talk);
 
   @override
-  _TalkDetailScreenState createState() => _TalkDetailScreenState(talk);
+  _TalkDetailScreenState createState() => _TalkDetailScreenState();
 }
 
-class _TalkDetailScreenState extends BaseScopedModelState<TalkDetailScreen> {
-  Talk talk;
+class _TalkDetailScreenState extends StreamBuilderState<TalkDetailScreen> {
   TalkDetailModel model;
 
-  _TalkDetailScreenState(Talk talk) {
-    this.talk = talk;
+  _TalkDetailScreenState() {
     this.model = TalkDetailModel();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return ScopedModel<TalkDetailModel>(
-      model: model,
-      child: _TalkDetailScreenContent(talk),
-    );
+  UiModel getUiModel() {
+    return model;
   }
 
   @override
@@ -39,49 +34,36 @@ class _TalkDetailScreenState extends BaseScopedModelState<TalkDetailScreen> {
   }
 
   @override
-  void onDispose() {
-    model.destroy();
-  }
-}
-
-class _TalkDetailScreenContent extends StatefulWidget {
-  Talk talk;
-
-  _TalkDetailScreenContent(this.talk);
-
-  @override
-  __TalkDetailScreenContentState createState() =>
-      __TalkDetailScreenContentState();
-}
-
-class __TalkDetailScreenContentState extends State<_TalkDetailScreenContent> {
-  @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<TalkDetailModel>(
-        builder: (BuildContext context, Widget child, TalkDetailModel model) {
-      print('onBuild: ' + model.currentState.toString());
+    return StreamBuilder<CurrentState>(
+        initialData: CurrentState.LOADING_TALK_DETAIL,
+        stream: model.uiStateStream(),
+        builder: (context, asyncSnapshot) {
+          if (asyncSnapshot.hasData) {
+            switch (asyncSnapshot.data) {
+              case CurrentState.LOADING_TALK_DETAIL:
+                return Scaffold(body: LoadingWidget());
 
-      if (model.showLoading) {
-        return Scaffold(body: LoadingWidget());
-      }
+              case CurrentState.SHOW_ERROR_TALK_DETAIL:
+                return Scaffold(
+                    body: NetworkErrorWidget(
+                      onPressed: () => model.getTalkDetail(widget.talk),
+                    ));
 
-      if (model.showError) {
-        return Scaffold(
-            body: NetworkErrorWidget(
-          onPressed: () => model.getTalkDetail(widget.talk),
-        ));
-      }
-
-      return Scaffold(
-          appBar: AppBar(
-            title: Text(model.talk.name),
-            backgroundColor: _talkHeaderContainerColor(model.talk),
-          ),
-          body: TalkDetailWidget(
-            talk: model.talk,
-            onRatingChanged: (newTalkRating) => model.rateTalk(newTalkRating),
-          ));
-    });
+              case CurrentState.SHOW_TALK_DETAIL:
+                return Scaffold(
+                    appBar: AppBar(
+                      title: Text(model.talk.name),
+                      backgroundColor: _talkHeaderContainerColor(model.talk),
+                    ),
+                    body: TalkDetailWidget(
+                      talk: model.talk,
+                      onRatingChanged: (newTalkRating) =>
+                          model.rateTalk(newTalkRating),
+                    ));
+            }
+          }
+        });
   }
 
   Color _talkHeaderContainerColor(Talk talk) {

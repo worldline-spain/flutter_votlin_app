@@ -1,21 +1,16 @@
 import 'package:domain/interactor/talks/get_all_talks_use_case.dart';
 import 'package:domain/interactor/talks/get_talks_by_track_use_case.dart';
 import 'package:domain/model/models.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_votlin_app/app/core/injection/injector.dart';
-import 'package:flutter_votlin_app/app/core/scoped_model/scoped_model_pattern.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter_votlin_app/app/core/stream_builder/stream_builder_pattern.dart';
+import 'package:rxdart/rxdart.dart';
 
-enum _CurrentState { LOADING_TALKS, SHOW_TALKS, SHOW_ERROR_TALKS }
+enum CurrentState { LOADING_TALKS, SHOW_TALKS, SHOW_ERROR_TALKS }
 
-class TalksModel extends BaseScopedModel {
-  static TalksModel of(BuildContext context) =>
-      ScopedModel.of<TalksModel>(context);
-
+class TalksModel extends UiModel<CurrentState> {
   GetAllTalksUseCase _getAllTalksUseCase;
   GetTalksByTrackUseCase _getTalksByTrackUseCase;
 
-  _CurrentState currentState;
   List<Talk> alltalks = List();
   List<Talk> businessTalks = List();
   List<Talk> developmentTalks = List();
@@ -27,19 +22,12 @@ class TalksModel extends BaseScopedModel {
         GetTalksByTrackUseCase(Injector.talksRepository);
   }
 
-  bool get showLoading => currentState == _CurrentState.LOADING_TALKS;
-
-  bool get showTalks => currentState == _CurrentState.SHOW_TALKS;
-
-  bool get showError => currentState == _CurrentState.SHOW_ERROR_TALKS;
-
   void onTrackSelected(Track track) {
     _getTalksByTrack(track);
   }
 
   void getAllTalks() {
-    currentState = _CurrentState.LOADING_TALKS;
-    notifyListeners();
+    show(CurrentState.LOADING_TALKS);
 
     _getAllTalksUseCase.execute(
       onData: (response) {
@@ -49,21 +37,18 @@ class TalksModel extends BaseScopedModel {
         developmentTalks = response.developmentTalks;
         makerTalks = response.makerTalks;
 
-        currentState = _CurrentState.SHOW_TALKS;
-        notifyListeners();
+        show(CurrentState.SHOW_TALKS);
       },
       onDone: () => print('onDone'),
       onError: (error) {
         print('onError');
-        currentState = _CurrentState.SHOW_ERROR_TALKS;
-        notifyListeners();
+        show(CurrentState.SHOW_ERROR_TALKS);
       },
     );
   }
 
   void _getTalksByTrack(Track track) {
-    currentState = _CurrentState.LOADING_TALKS;
-    notifyListeners();
+    show(CurrentState.LOADING_TALKS);
 
     _getTalksByTrackUseCase.execute(
       params: track,
@@ -84,14 +69,12 @@ class TalksModel extends BaseScopedModel {
             break;
         }
 
-        currentState = _CurrentState.SHOW_TALKS;
-        notifyListeners();
+        show(CurrentState.SHOW_TALKS);
       },
       onDone: () => print('onDone'),
       onError: (error) {
         print('onError');
-        currentState = _CurrentState.SHOW_ERROR_TALKS;
-        notifyListeners();
+        show(CurrentState.SHOW_ERROR_TALKS);
       },
     );
   }

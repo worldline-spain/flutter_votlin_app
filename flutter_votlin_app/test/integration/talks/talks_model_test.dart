@@ -25,6 +25,9 @@ void main() {
   test('get all talks success', () async {
     _givenAllTalksResponses(mockServer);
 
+    expect(talksModel.uiStateStream(),
+        emitsInOrder({CurrentState.LOADING_TALKS, CurrentState.SHOW_TALKS}));
+
     talksModel.getAllTalks();
     await _wait();
 
@@ -32,27 +35,31 @@ void main() {
     expect(talksModel.businessTalks, hasLength(13));
     expect(talksModel.developmentTalks, hasLength(15));
     expect(talksModel.makerTalks, hasLength(6));
-    expect(talksModel.showTalks, true);
   });
 
   test('get all talks error', () async {
     mockServer.enqueue(httpCode: 401);
 
+    expect(
+        talksModel.uiStateStream(),
+        emitsInOrder(
+            {CurrentState.LOADING_TALKS, CurrentState.SHOW_ERROR_TALKS}));
+
     talksModel.getAllTalks();
     await _wait();
-
-    expect(talksModel.showError, true);
   });
 
   test('get talks from track ALL success', () async {
     mockServer.enqueue(
         body: File('test/server_responses/all_talks.json').readAsStringSync());
 
+    expect(talksModel.uiStateStream(),
+        emitsInOrder({CurrentState.LOADING_TALKS, CurrentState.SHOW_TALKS}));
+
     talksModel.onTrackSelected(Track.ALL);
     await _wait();
 
     expect(talksModel.alltalks, isNotEmpty);
-    expect(talksModel.showTalks, true);
   });
 
   test('get talks from track BUSINESS success', () async {
@@ -60,11 +67,13 @@ void main() {
         body: File('test/server_responses/business_talks.json')
             .readAsStringSync());
 
+    expect(talksModel.uiStateStream(),
+        emitsInOrder({CurrentState.LOADING_TALKS, CurrentState.SHOW_TALKS}));
+
     talksModel.onTrackSelected(Track.BUSINESS);
     await _wait();
 
     expect(talksModel.businessTalks, isNotEmpty);
-    expect(talksModel.showTalks, true);
   });
 
   test('get talks from track DEVELOPMENT success', () async {
@@ -72,11 +81,13 @@ void main() {
         body: File('test/server_responses/business_talks.json')
             .readAsStringSync());
 
+    expect(talksModel.uiStateStream(),
+        emitsInOrder({CurrentState.LOADING_TALKS, CurrentState.SHOW_TALKS}));
+
     talksModel.onTrackSelected(Track.DEVELOPMENT);
     await _wait();
 
     expect(talksModel.developmentTalks, isNotEmpty);
-    expect(talksModel.showTalks, true);
   });
 
   test('get talks from track MAKER success', () async {
@@ -84,11 +95,13 @@ void main() {
         body:
             File('test/server_responses/maker_talks.json').readAsStringSync());
 
+    expect(talksModel.uiStateStream(),
+        emitsInOrder({CurrentState.LOADING_TALKS, CurrentState.SHOW_TALKS}));
+
     talksModel.onTrackSelected(Track.MAKER);
     await _wait();
 
     expect(talksModel.makerTalks, isNotEmpty);
-    expect(talksModel.showTalks, true);
   });
 
   tearDownAll(() {
@@ -100,34 +113,39 @@ void main() {
   test('get talks from track throws an error', () async {
     mockServer.enqueue(httpCode: 401);
 
-    talksModel.onTrackSelected(Track.ALL);
-    await _wait();
+    expect(
+        talksModel.uiStateStream(),
+        emitsInOrder(
+            {CurrentState.LOADING_TALKS, CurrentState.SHOW_ERROR_TALKS}));
 
-    expect(talksModel.showError, true);
+    talksModel.onTrackSelected(Track.ALL);
   });
 
   test('get all talks cancelled when presenter is destroyed', () async {
     _givenAllTalksResponses(mockServer);
+
+    expect(
+        talksModel.uiStateStream(), emitsInOrder({CurrentState.LOADING_TALKS}));
 
     talksModel.getAllTalks();
     talksModel.destroy();
     await _wait();
 
     expect(talksModel.alltalks, isEmpty);
-    expect(talksModel.showLoading, true);
   });
 
   test('on track selected cancelled when presenter is destroyed', () async {
     mockServer.enqueue(
         body: File('test/server_responses/all_talks.json').readAsStringSync());
 
+    expect(
+        talksModel.uiStateStream(), emitsInOrder({CurrentState.LOADING_TALKS}));
+
     talksModel.onTrackSelected(Track.ALL);
     talksModel.destroy();
     await _wait();
 
-
     expect(talksModel.alltalks, isEmpty);
-    expect(talksModel.showLoading, true);
   });
 
   tearDownAll(() {
