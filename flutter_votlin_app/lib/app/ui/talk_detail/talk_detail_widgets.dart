@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_votlin_app/app/core/utils/url_utils.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
-class TalkDetailWidget extends StatelessWidget {
+class TalkDetailWidget extends StatefulWidget {
   final Talk talk;
   final Function onRatingChanged;
 
@@ -15,10 +15,64 @@ class TalkDetailWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[talkDescription(), talkRating(), _speakers(talk)],
+  _TalkDetailWidgetState createState() =>
+      _TalkDetailWidgetState(talk: talk, onRatingChanged: onRatingChanged);
+}
+
+class _TalkDetailWidgetState extends State<TalkDetailWidget>
+    with TickerProviderStateMixin {
+  final Talk talk;
+  final Function onRatingChanged;
+
+  AnimationController _animationController;
+  Animation talkDetailAnimation;
+
+  _TalkDetailWidgetState({
+    Key key,
+    @required this.talk,
+    @required this.onRatingChanged,
+  });
+
+  @override
+  void initState() {
+    final int animationDuration = 300;
+    _animationController = AnimationController(
+        vsync: this, duration: new Duration(milliseconds: animationDuration));
+
+    talkDetailAnimation = Tween(
+      begin: 0.5,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.linear,
+      ),
     );
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _animationController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+        animation: talkDetailAnimation,
+        builder: (context, widget) {
+          return Transform.scale(
+            scale: talkDetailAnimation.value,
+            child: ListView(
+              children: <Widget>[
+                talkDescription(),
+                talkRating(),
+                _speakers(talk)
+              ],
+            ),
+          );
+        });
   }
 
   Widget talkDescription() {

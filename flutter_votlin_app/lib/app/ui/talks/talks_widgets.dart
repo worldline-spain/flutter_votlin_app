@@ -2,10 +2,10 @@ import 'package:domain/model/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_votlin_app/app/core/navigation/app_navigator.dart';
 import 'package:flutter_votlin_app/app/styles/styles.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:math';
 
-class TalkListWidget extends StatelessWidget {
+class TalkListWidget extends StatefulWidget {
   final List<Talk> talkList;
   final Function onRefresh;
 
@@ -14,6 +14,48 @@ class TalkListWidget extends StatelessWidget {
     @required this.talkList,
     @required this.onRefresh,
   }) : super(key: key);
+
+  @override
+  _TalkListWidgetState createState() =>
+      _TalkListWidgetState(talkList: talkList, onRefresh: onRefresh);
+}
+
+class _TalkListWidgetState extends State<TalkListWidget>
+    with TickerProviderStateMixin {
+  final List<Talk> talkList;
+  final Function onRefresh;
+
+  AnimationController _animationController;
+  Animation cardAnimation;
+
+  _TalkListWidgetState({
+    Key key,
+    @required this.talkList,
+    @required this.onRefresh,
+  });
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+        vsync: this, duration: new Duration(milliseconds: 500));
+
+    cardAnimation = Tween(begin: -pi, end: -pi * 2).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.linear,
+      ),
+    );
+
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _animationController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +76,19 @@ class TalkListWidget extends StatelessWidget {
 
   Widget talkItem(BuildContext context, Talk talk) {
     return GestureDetector(
-      child: Card(
-        margin: EdgeInsets.only(bottom: 10.0),
-        child: Column(
-          children: <Widget>[_talkHeader(talk), _speakers(talk)],
-        ),
-      ),
+      child: AnimatedBuilder(
+          animation: cardAnimation,
+          builder: (context, widget) {
+            return Transform.rotate(
+              child: Card(
+                margin: EdgeInsets.only(bottom: 10.0),
+                child: Column(
+                  children: <Widget>[_talkHeader(talk), _speakers(talk)],
+                ),
+              ),
+              angle: cardAnimation.value,
+            );
+          }),
       onTap: () => AppNavigator.goToTalkDetail(context, talk),
     );
   }
