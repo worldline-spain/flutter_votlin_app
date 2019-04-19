@@ -1,7 +1,6 @@
-# Stream builder branch (multiple packages)
-In this branch, the domain and data packages are equivalent to other branches implemented with multiple packages architecture, and they are not affected
-by scoped model implementation.
-In the app package, we have used the [stream builder](https://www.youtube.com/watch?v=MkKEWHfy99Y), in combination with [rxdart behavior subjects](https://pub.dartlang.org/packages/rxdart)
+# Single package
+In this branch, we have app, domain and data but we have one single flutter package.
+We have used the [stream builder](https://www.youtube.com/watch?v=MkKEWHfy99Y), in combination with [rxdart behavior subjects](https://pub.dartlang.org/packages/rxdart)
 
 With this combination, we can implement some kind of MVVM pattern.
 
@@ -63,3 +62,6 @@ To understand how it works, take a look to [talks screen](lib/app/ui/talks/).
 - We need add BehaviorSubjects from rxdart to make things easier.
 - Unit testing looks difficult. Testing asynchronous code is always more diffcult than testing synchronous code.
 - It looks more complex than scope model, but it is possible to put some code in base classes to reduce complexity.
+
+## Limitations of single package approach
+- If we are not strict with pull requests, project can be destroyed.

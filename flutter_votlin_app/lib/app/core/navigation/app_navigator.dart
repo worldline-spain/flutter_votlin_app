@@ -1,5 +1,5 @@
-import 'package:domain/model/models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_votlin_app/domain/model/models.dart';
 import 'package:flutter_votlin_app/app/ui/talk_detail/talk_detail_screen.dart';
 import 'package:flutter_votlin_app/app/ui/talks/talks_screen.dart';
 

@@ -1,8 +1,7 @@
-import 'package:domain/model/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_votlin_app/app/core/navigation/app_navigator.dart';
+import 'package:flutter_votlin_app/domain/model/models.dart';
 import 'package:flutter_votlin_app/app/styles/styles.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class TalkListWidget extends StatelessWidget {
