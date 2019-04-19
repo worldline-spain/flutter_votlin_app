@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_votlin_app/app/core/navigation/app_navigator.dart';
+import 'package:flutter_votlin_app/core/navigation/app_navigator.dart';
 
 class SplashScreen extends StatefulWidget {
   @override

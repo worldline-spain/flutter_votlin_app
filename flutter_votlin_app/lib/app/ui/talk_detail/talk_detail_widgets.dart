@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_votlin_app/app/core/utils/url_utils.dart';
-import 'package:flutter_votlin_app/domain/model/models.dart';
+import 'package:flutter_votlin_app/core/utils/url_utils.dart';
+import 'package:flutter_votlin_app/features/talks/models.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class TalkDetailWidget extends StatelessWidget {

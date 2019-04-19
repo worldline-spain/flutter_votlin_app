@@ -1,9 +1,8 @@
-import 'package:flutter_votlin_app/app/core/injection/injector.dart';
-import 'package:flutter_votlin_app/app/core/stream_builder/stream_builder_pattern.dart';
-import 'package:flutter_votlin_app/domain/interactor/talks/get_all_talks_use_case.dart';
-import 'package:flutter_votlin_app/domain/interactor/talks/get_talks_by_track_use_case.dart';
-import 'package:flutter_votlin_app/domain/model/models.dart';
-import 'package:flutter_votlin_app/domain/interactor/talks/get_all_talks_use_case.dart';
+import 'package:flutter_votlin_app/core/injection/injector.dart';
+import 'package:flutter_votlin_app/core/stream_builder/stream_builder_pattern.dart';
+import 'package:flutter_votlin_app/features/talks/interactor/get_all_talks_use_case.dart';
+import 'package:flutter_votlin_app/features/talks/interactor/get_talks_by_track_use_case.dart';
+import 'package:flutter_votlin_app/features/talks/models.dart';
 
 enum CurrentState { LOADING_TALKS, SHOW_TALKS, SHOW_ERROR_TALKS }
 

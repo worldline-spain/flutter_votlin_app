@@ -1,6 +1,11 @@
-# Single package
-In this branch, we have app, domain and data but we have one single flutter package.
-We have used the [stream builder](https://www.youtube.com/watch?v=MkKEWHfy99Y), in combination with [rxdart behavior subjects](https://pub.dartlang.org/packages/rxdart)
+# Stream builder branch (single package)
+In this branch, we don't have domain and data packages. 
+We have one single package with the following structure:
+- app -> code used for build the user interface
+- core -> code that several classes and functions that could be reused in other projects with very few modifications
+- features -> business logic, use cases and datasources
+
+On the other hand, we are using the [stream builder](https://www.youtube.com/watch?v=MkKEWHfy99Y), in combination with [rxdart behavior subjects](https://pub.dartlang.org/packages/rxdart)
 
 With this combination, we can implement some kind of MVVM pattern.
 
@@ -57,6 +62,10 @@ To reduce boilerplate, we have created a base ui model. With this base ui model,
 is easy: for instance, when talks are ready to show, just call method 'show(CurrentState.SHOW_TALKS)' and stream builder will be notified.
 
 To understand how it works, take a look to [talks screen](lib/app/ui/talks/).
+
+### Features
+In this folder we have grouped domain + data layers of clean architecture. The reason to group these layers by feature is that we want
+to reduce the number of folders that are usually used in clean architecture and build a more pragmatic folders structure. 
 
 ## Limitations of Stream builder pattern
 - We need add BehaviorSubjects from rxdart to make things easier.

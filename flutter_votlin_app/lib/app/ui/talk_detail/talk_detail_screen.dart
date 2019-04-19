@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_votlin_app/app/core/stream_builder/stream_builder_pattern.dart';
-import 'package:flutter_votlin_app/domain/model/models.dart';
+import 'package:flutter_votlin_app/core/stream_builder/stream_builder_pattern.dart';
+import 'package:flutter_votlin_app/features/talks/models.dart';
 import 'package:flutter_votlin_app/app/styles/styles.dart';
 import 'package:flutter_votlin_app/app/ui/common/common_widgets.dart';
 import 'package:flutter_votlin_app/app/ui/talk_detail/talk_detail_model.dart';
