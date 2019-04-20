@@ -6,6 +6,7 @@ import 'package:flutter_votlin_app/features/talks/datasource/database/talks_db_d
 import 'package:flutter_votlin_app/features/talks/datasource/database/talks_mock_db_datasource.dart';
 import 'package:flutter_votlin_app/features/talks/datasource/mock/talks_mock_datasource.dart';
 import 'package:flutter_votlin_app/features/talks/datasource/network/talks_network_datasource.dart';
+import 'package:flutter_votlin_app/features/talks/datasource/platform/talks_platform_datasource.dart';
 import 'package:flutter_votlin_app/features/talks/datasource/talks_datasources.dart';
 import 'package:flutter_votlin_app/features/talks/datasource/talks_repository_impl.dart';
 import 'package:flutter_votlin_app/features/talks/repositories.dart';
@@ -40,6 +41,8 @@ class Injector {
       talksRemoteDataSource = TalksNetworkDataSource(coreHttpClient);
     } else if (Config.flavor == Flavor.MOCK) {
       talksRemoteDataSource = TalksMockDataSource();
+    } else if (Config.flavor == Flavor.PLATFORM) {
+      talksRemoteDataSource = TalksPlatformDataSource();
     }
 
     TalksLocalDataSource talksLocalDataSource;

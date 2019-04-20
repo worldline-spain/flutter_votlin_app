@@ -1,4 +1,4 @@
-enum Flavor { MOCK, LOCALHOST_EMULATOR, MOCK_WEBSERVER }
+enum Flavor { MOCK, LOCALHOST_EMULATOR, MOCK_WEBSERVER, PLATFORM }
 
 class Config {
   static Flavor flavor;
@@ -10,6 +10,7 @@ class Config {
       case Flavor.MOCK_WEBSERVER:
         return "http://127.0.0.1:8081";
       case Flavor.MOCK:
+      case Flavor.PLATFORM:
       default:
         return "";
     }
