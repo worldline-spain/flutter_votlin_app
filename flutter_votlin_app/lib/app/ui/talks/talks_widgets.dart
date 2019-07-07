@@ -121,7 +121,7 @@ class TalkListWidget extends StatelessWidget {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
                 child: CachedNetworkImage(
-                  placeholder: Icon(Icons.account_circle),
+                  placeholder: (context, url) => Icon(Icons.account_circle),
                   imageUrl: speaker.photoUrl,
                 )),
           ),
