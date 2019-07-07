@@ -16,11 +16,11 @@ dependencies:
   flutter:
     sdk: flutter
   get_it: ^1.0.2
-  path_provider: ^0.4.1
+  path_provider: ^1.1.0
   smooth_star_rating: ^1.0.1
   url_launcher: ^4.0.2
   transparent_image: ^0.1.0
-  cached_network_image: ^0.5.1
+  cached_network_image: ^1.0.0
   domain:
     path: domain
   data:
