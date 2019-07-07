@@ -45,11 +45,8 @@ To experiment with project architecture, we are going to implement different app
 | architecture/multiple_packages_mvp | Multiple packages, model view presenter | 
 | architecture/multiple_packages_scoped_model | Multiple packages, scoped model|
 | architecture/multiple_packages_stream_builder | Multiple packages, stream builder|
-
-### TODO branches
-  - Single package architecture
-  - FutureBuilder
-  - States Rebuilder package
+| architecture/single_package_stream_builder | Single package, stream_builder|
+| architecture/single_package_platform_channel | Single package, platform channel|
 
 ## But... is Clean Architecture the best architecture for Flutter?
 Absolutely not. This is only a petshop project for experiment with Clean Architecture and with Flutter framework.
