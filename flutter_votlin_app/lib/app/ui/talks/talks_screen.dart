@@ -47,21 +47,28 @@ class _TalksScreenState extends StreamBuilderState<TalksScreen> {
                 if (asyncSnapshot.hasData) {
                   switch (asyncSnapshot.data) {
                     case CurrentState.LOADING_TALKS:
-                      return LoadingWidget();
+                      return stateLoading();
 
                     case CurrentState.SHOW_ERROR_TALKS:
-                      return NetworkErrorWidget(
-                          onPressed: () => model.getAllTalks());
+                      return stateShowError();
 
                     case CurrentState.SHOW_TALKS:
-                      return talksTabBarView();
+                      return stateShowTalks();
                   }
                 }
               },
             )));
   }
 
-  TabBarView talksTabBarView() {
+  Widget stateLoading() {
+    return LoadingWidget();
+  }
+
+  Widget stateShowError() {
+    return NetworkErrorWidget(onPressed: () => model.getAllTalks());
+  }
+
+  Widget stateShowTalks() {
     return TabBarView(
       children: <Widget>[
         TalkListWidget(

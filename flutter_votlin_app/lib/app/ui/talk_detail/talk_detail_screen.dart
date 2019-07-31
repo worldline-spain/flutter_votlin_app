@@ -7,7 +7,6 @@ import 'package:flutter_votlin_app/app/ui/talk_detail/talk_detail_model.dart';
 import 'package:flutter_votlin_app/app/ui/talk_detail/talk_detail_widgets.dart';
 
 class TalkDetailScreen extends StatefulWidget {
-
   final Talk talk;
 
   TalkDetailScreen(this.talk);
@@ -42,28 +41,39 @@ class _TalkDetailScreenState extends StreamBuilderState<TalkDetailScreen> {
           if (asyncSnapshot.hasData) {
             switch (asyncSnapshot.data) {
               case CurrentState.LOADING_TALK_DETAIL:
-                return Scaffold(body: LoadingWidget());
+                return stateLoading();
 
               case CurrentState.SHOW_ERROR_TALK_DETAIL:
-                return Scaffold(
-                    body: NetworkErrorWidget(
-                      onPressed: () => model.getTalkDetail(widget.talk),
-                    ));
+                return stateShowError();
 
               case CurrentState.SHOW_TALK_DETAIL:
-                return Scaffold(
-                    appBar: AppBar(
-                      title: Text(model.talk.name),
-                      backgroundColor: _talkHeaderContainerColor(model.talk),
-                    ),
-                    body: TalkDetailWidget(
-                      talk: model.talk,
-                      onRatingChanged: (newTalkRating) =>
-                          model.rateTalk(newTalkRating),
-                    ));
+                return stateShowTalkDetail();
             }
           }
         });
+  }
+
+  Widget stateLoading() {
+    return Scaffold(body: LoadingWidget());
+  }
+
+  Widget stateShowError() {
+    return Scaffold(
+        body: NetworkErrorWidget(
+      onPressed: () => model.getTalkDetail(widget.talk),
+    ));
+  }
+
+  Widget stateShowTalkDetail() {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(model.talk.name),
+          backgroundColor: _talkHeaderContainerColor(model.talk),
+        ),
+        body: TalkDetailWidget(
+          talk: model.talk,
+          onRatingChanged: (newTalkRating) => model.rateTalk(newTalkRating),
+        ));
   }
 
   Color _talkHeaderContainerColor(Talk talk) {
