@@ -4,13 +4,13 @@ import 'package:flutter_votlin_app/features/talks/models.dart';
 import 'package:flutter_votlin_app/features/talks/interactor/get_talk_detail_use_case.dart';
 import 'package:flutter_votlin_app/features/talks/interactor/rate_talk_use_case.dart';
 
-enum CurrentState {
+enum TalkDetailState {
   LOADING_TALK_DETAIL,
   SHOW_TALK_DETAIL,
   SHOW_ERROR_TALK_DETAIL
 }
 
-class TalkDetailModel extends UiModel<CurrentState> {
+class TalkDetailModel extends UiModel<TalkDetailState> {
   GetTalkDetailUseCase getTalkDetailUseCase;
   RateTalkUseCase rateTalkUseCase;
 
@@ -22,29 +22,32 @@ class TalkDetailModel extends UiModel<CurrentState> {
     this.rateTalkUseCase = RateTalkUseCase(Injector.talksRepository);
   }
 
-  void getTalkDetail(Talk talk) {
-    show(CurrentState.LOADING_TALK_DETAIL);
+  @override
+  TalkDetailState initialState() {
+    return TalkDetailState.LOADING_TALK_DETAIL;
+  }
 
+  void getTalkDetail(Talk talk) {
     getTalkDetailUseCase.execute(
       params: talk,
       onData: (response) {
         print('onData');
         this.talk = response.talk;
 
-        show(CurrentState.SHOW_TALK_DETAIL);
+        show(TalkDetailState.SHOW_TALK_DETAIL);
       },
       onDone: () => print('onDone'),
       onError: (error) {
         print('onError');
 
-        show(CurrentState.SHOW_ERROR_TALK_DETAIL);
+        show(TalkDetailState.SHOW_ERROR_TALK_DETAIL);
       },
     );
   }
 
   void rateTalk(TalkRating talkRating) {
     this.talk.rating = talkRating;
-    show(CurrentState.SHOW_TALK_DETAIL);
+    show(TalkDetailState.SHOW_TALK_DETAIL);
 
     rateTalkUseCase.execute(
       params: talkRating,

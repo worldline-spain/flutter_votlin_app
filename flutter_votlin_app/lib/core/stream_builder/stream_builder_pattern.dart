@@ -10,10 +10,21 @@ abstract class UiModel<ST> {
     _currentStateSubject.add(newState);
   }
 
+  ST initialState();
+
   void destroy();
 }
 
-abstract class StreamBuilderState<SW extends StatefulWidget> extends State<SW> {
+abstract class StreamBuilderState<SW extends StatefulWidget, M extends UiModel>
+    extends State<SW> {
+  M _uiModel;
+
+  StreamBuilderState(UiModel uiModel) {
+    this._uiModel = uiModel;
+  }
+
+  M get model => _uiModel;
+
   @override
   void initState() {
     super.initState();
@@ -23,12 +34,30 @@ abstract class StreamBuilderState<SW extends StatefulWidget> extends State<SW> {
   @override
   void dispose() {
     super.dispose();
-    if (getUiModel() != null) {
-      getUiModel().destroy();
+    if (_uiModel != null) {
+      _uiModel.destroy();
     }
   }
 
-  UiModel getUiModel();
-
   void onInitState();
+}
+
+class StateProvider<ST> extends StreamBuilder<ST> {
+  StateProvider({
+    Key key,
+    @required UiModel model,
+    @required Function builder,
+  })  : assert(builder != null),
+        super(
+          key: key,
+          initialData: model.initialState(),
+          stream: model.uiStateStream(),
+          builder: (context, asyncSnapshot) {
+            if (asyncSnapshot.hasData) {
+              return builder(context, asyncSnapshot.data);
+            } else {
+              return Container();
+            }
+          },
+        );
 }

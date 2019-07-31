@@ -7,20 +7,12 @@ import 'package:flutter_votlin_app/app/ui/talks/talks_widgets.dart';
 
 class TalksScreen extends StatefulWidget {
   @override
-  _TalksScreenState createState() => _TalksScreenState();
+  _TalksScreenState createState() => _TalksScreenState(TalksModel());
 }
 
-class _TalksScreenState extends StreamBuilderState<TalksScreen> {
-  TalksModel model;
+class _TalksScreenState extends StreamBuilderState<TalksScreen, TalksModel> {
 
-  _TalksScreenState() {
-    model = TalksModel();
-  }
-
-  @override
-  UiModel getUiModel() {
-    return model;
-  }
+  _TalksScreenState(TalksModel model) : super(model);
 
   @override
   void onInitState() {
@@ -32,32 +24,29 @@ class _TalksScreenState extends StreamBuilderState<TalksScreen> {
     return DefaultTabController(
         length: 4,
         child: Scaffold(
-            appBar: AppBar(
-                title: Text("Flutter Votlin"),
-                bottom: TabBar(isScrollable: true, tabs: [
-                  Tab(text: "ALL"),
-                  Tab(text: "BUSINESS"),
-                  Tab(text: "DEVELOPMENT"),
-                  Tab(text: "MAKER"),
-                ])),
-            body: StreamBuilder<CurrentState>(
-              initialData: CurrentState.LOADING_TALKS,
-              stream: model.uiStateStream(),
-              builder: (context, asyncSnapshot) {
-                if (asyncSnapshot.hasData) {
-                  switch (asyncSnapshot.data) {
-                    case CurrentState.LOADING_TALKS:
-                      return stateLoading();
+          appBar: AppBar(
+              title: Text("Flutter Votlin"),
+              bottom: TabBar(isScrollable: true, tabs: [
+                Tab(text: "ALL"),
+                Tab(text: "BUSINESS"),
+                Tab(text: "DEVELOPMENT"),
+                Tab(text: "MAKER"),
+              ])),
+          body: StateProvider<TalksState>(
+              model: model,
+              builder: (context, state) {
+                switch (state) {
+                  case TalksState.LOADING_TALKS:
+                    return stateLoading();
 
-                    case CurrentState.SHOW_ERROR_TALKS:
-                      return stateShowError();
+                  case TalksState.SHOW_ERROR_TALKS:
+                    return stateShowError();
 
-                    case CurrentState.SHOW_TALKS:
-                      return stateShowTalks();
-                  }
+                  case TalksState.SHOW_TALKS:
+                    return stateShowTalks();
                 }
-              },
-            )));
+              }),
+        ));
   }
 
   Widget stateLoading() {

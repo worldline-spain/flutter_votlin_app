@@ -12,20 +12,14 @@ class TalkDetailScreen extends StatefulWidget {
   TalkDetailScreen(this.talk);
 
   @override
-  _TalkDetailScreenState createState() => _TalkDetailScreenState();
+  _TalkDetailScreenState createState() =>
+      _TalkDetailScreenState(TalkDetailModel());
 }
 
-class _TalkDetailScreenState extends StreamBuilderState<TalkDetailScreen> {
-  TalkDetailModel model;
+class _TalkDetailScreenState
+    extends StreamBuilderState<TalkDetailScreen, TalkDetailModel> {
 
-  _TalkDetailScreenState() {
-    this.model = TalkDetailModel();
-  }
-
-  @override
-  UiModel getUiModel() {
-    return model;
-  }
+  _TalkDetailScreenState(UiModel uiModel) : super(uiModel);
 
   @override
   void onInitState() {
@@ -34,21 +28,18 @@ class _TalkDetailScreenState extends StreamBuilderState<TalkDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<CurrentState>(
-        initialData: CurrentState.LOADING_TALK_DETAIL,
-        stream: model.uiStateStream(),
-        builder: (context, asyncSnapshot) {
-          if (asyncSnapshot.hasData) {
-            switch (asyncSnapshot.data) {
-              case CurrentState.LOADING_TALK_DETAIL:
-                return stateLoading();
+    return StateProvider<TalkDetailState>(
+        model: model,
+        builder: (context, state) {
+          switch (state) {
+            case TalkDetailState.LOADING_TALK_DETAIL:
+              return stateLoading();
 
-              case CurrentState.SHOW_ERROR_TALK_DETAIL:
-                return stateShowError();
+            case TalkDetailState.SHOW_ERROR_TALK_DETAIL:
+              return stateShowError();
 
-              case CurrentState.SHOW_TALK_DETAIL:
-                return stateShowTalkDetail();
-            }
+            case TalkDetailState.SHOW_TALK_DETAIL:
+              return stateShowTalkDetail();
           }
         });
   }

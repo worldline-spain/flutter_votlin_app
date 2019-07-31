@@ -4,9 +4,9 @@ import 'package:flutter_votlin_app/features/talks/interactor/get_all_talks_use_c
 import 'package:flutter_votlin_app/features/talks/interactor/get_talks_by_track_use_case.dart';
 import 'package:flutter_votlin_app/features/talks/models.dart';
 
-enum CurrentState { LOADING_TALKS, SHOW_TALKS, SHOW_ERROR_TALKS }
+enum TalksState { LOADING_TALKS, SHOW_TALKS, SHOW_ERROR_TALKS }
 
-class TalksModel extends UiModel<CurrentState> {
+class TalksModel extends UiModel<TalksState> {
   GetAllTalksUseCase _getAllTalksUseCase;
   GetTalksByTrackUseCase _getTalksByTrackUseCase;
 
@@ -21,13 +21,16 @@ class TalksModel extends UiModel<CurrentState> {
         GetTalksByTrackUseCase(Injector.talksRepository);
   }
 
+  @override
+  TalksState initialState() {
+    return TalksState.LOADING_TALKS;
+  }
+
   void onTrackSelected(Track track) {
     _getTalksByTrack(track);
   }
 
   void getAllTalks() {
-    show(CurrentState.LOADING_TALKS);
-
     _getAllTalksUseCase.execute(
       onData: (response) {
         print('onData');
@@ -36,18 +39,18 @@ class TalksModel extends UiModel<CurrentState> {
         developmentTalks = response.developmentTalks;
         makerTalks = response.makerTalks;
 
-        show(CurrentState.SHOW_TALKS);
+        show(TalksState.SHOW_TALKS);
       },
       onDone: () => print('onDone'),
       onError: (error) {
         print('onError');
-        show(CurrentState.SHOW_ERROR_TALKS);
+        show(TalksState.SHOW_ERROR_TALKS);
       },
     );
   }
 
   void _getTalksByTrack(Track track) {
-    show(CurrentState.LOADING_TALKS);
+    show(TalksState.LOADING_TALKS);
 
     _getTalksByTrackUseCase.execute(
       params: track,
@@ -68,12 +71,12 @@ class TalksModel extends UiModel<CurrentState> {
             break;
         }
 
-        show(CurrentState.SHOW_TALKS);
+        show(TalksState.SHOW_TALKS);
       },
       onDone: () => print('onDone'),
       onError: (error) {
         print('onError');
-        show(CurrentState.SHOW_ERROR_TALKS);
+        show(TalksState.SHOW_ERROR_TALKS);
       },
     );
   }
