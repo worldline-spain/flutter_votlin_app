@@ -1,8 +1,7 @@
-import 'package:domain/model/models.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_votlin_app/app/core/navigation/app_navigator.dart';
+import 'package:flutter_votlin_app/core/navigation/app_navigator.dart';
+import 'package:flutter_votlin_app/features/talks/models.dart';
 import 'package:flutter_votlin_app/app/styles/styles.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class TalkListWidget extends StatelessWidget {
@@ -122,7 +121,7 @@ class TalkListWidget extends StatelessWidget {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
                 child: CachedNetworkImage(
-                  placeholder: Icon(Icons.account_circle),
+                  placeholder: (context, url) => Icon(Icons.account_circle),
                   imageUrl: speaker.photoUrl,
                 )),
           ),

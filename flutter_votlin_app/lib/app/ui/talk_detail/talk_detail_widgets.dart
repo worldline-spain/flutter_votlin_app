@@ -1,9 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:domain/model/models.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_votlin_app/app/core/utils/url_utils.dart';
+import 'package:flutter_votlin_app/core/utils/url_utils.dart';
+import 'package:flutter_votlin_app/features/talks/models.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class TalkDetailWidget extends StatelessWidget {
   final Talk talk;
@@ -94,7 +93,7 @@ class TalkDetailWidget extends StatelessWidget {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(24.0),
                 child: CachedNetworkImage(
-                  placeholder: Icon(Icons.account_circle),
+                  placeholder: (context, url) => Icon(Icons.account_circle),
                   imageUrl: speaker.photoUrl,
                 )),
           ),

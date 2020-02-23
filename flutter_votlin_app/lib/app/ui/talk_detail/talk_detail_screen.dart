@@ -1,16 +1,10 @@
-import 'package:domain/model/models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_votlin_app/core/stream_builder/stream_builder_pattern.dart';
+import 'package:flutter_votlin_app/features/talks/models.dart';
 import 'package:flutter_votlin_app/app/styles/styles.dart';
 import 'package:flutter_votlin_app/app/ui/common/common_widgets.dart';
-import 'package:flutter_votlin_app/app/ui/talk_detail/talk_detail_presenter.dart';
-import 'package:flutter_votlin_app/app/core/mvp/mvp_pattern.dart';
+import 'package:flutter_votlin_app/app/ui/talk_detail/talk_detail_model.dart';
 import 'package:flutter_votlin_app/app/ui/talk_detail/talk_detail_widgets.dart';
-
-enum _ViewStates {
-  LOADING_TALK_DETAIL,
-  SHOW_TALK_DETAIL,
-  SHOW_ERROR_TALK_DETAIL
-}
 
 class TalkDetailScreen extends StatefulWidget {
   final Talk talk;
@@ -18,54 +12,59 @@ class TalkDetailScreen extends StatefulWidget {
   TalkDetailScreen(this.talk);
 
   @override
-  _TalkDetailScreenState createState() => _TalkDetailScreenState();
+  _TalkDetailScreenState createState() =>
+      _TalkDetailScreenState(TalkDetailModel());
 }
 
-class _TalkDetailScreenState extends MvpState<TalkDetailScreen, _ViewStates>
-    implements TalkDetailView {
-  TalkDetailPresenter _presenter;
+class _TalkDetailScreenState
+    extends StreamBuilderState<TalkDetailScreen, TalkDetailModel> {
 
-  _TalkDetailScreenState() {
-    this._presenter = TalkDetailPresenter(this);
-  }
+  _TalkDetailScreenState(UiModel uiModel) : super(uiModel);
 
   @override
   void onInitState() {
-    _presenter.getTalkDetail(widget.talk);
+    model.getTalkDetail(widget.talk);
   }
 
   @override
-  Presenter getPresenter() {
-    return _presenter;
+  Widget build(BuildContext context) {
+    return StateProvider<TalkDetailState>(
+        model: model,
+        builder: (context, state) {
+          switch (state) {
+            case TalkDetailState.LOADING_TALK_DETAIL:
+              return stateLoading();
+
+            case TalkDetailState.SHOW_ERROR_TALK_DETAIL:
+              return stateShowError();
+
+            case TalkDetailState.SHOW_TALK_DETAIL:
+              return stateShowTalkDetail();
+          }
+        });
   }
 
-  @override
-  Widget onBuild(BuildContext context, _ViewStates currentState) {
-    print('onBuild: ' + currentState.toString());
-    return widgetSelector(currentState);
+  Widget stateLoading() {
+    return Scaffold(body: LoadingWidget());
   }
 
-  Widget widgetSelector(_ViewStates currentState) {
-    switch (currentState) {
-      case _ViewStates.LOADING_TALK_DETAIL:
-        return Scaffold(body: LoadingWidget());
-      case _ViewStates.SHOW_TALK_DETAIL:
-        return Scaffold(
-            appBar: AppBar(
-              title: Text(_presenter.model.talk.name),
-              backgroundColor: _talkHeaderContainerColor(_presenter.model.talk),
-            ),
-            body: TalkDetailWidget(
-              talk: _presenter.model.talk,
-              onRatingChanged: (newTalkRating) =>
-                  _presenter.rateTalk(newTalkRating),
-            ));
-      case _ViewStates.SHOW_ERROR_TALK_DETAIL:
-        return Scaffold(
-          body: NetworkErrorWidget(
-              onPressed: () => _presenter.getTalkDetail(widget.talk)),
-        );
-    }
+  Widget stateShowError() {
+    return Scaffold(
+        body: NetworkErrorWidget(
+      onPressed: () => model.getTalkDetail(widget.talk),
+    ));
+  }
+
+  Widget stateShowTalkDetail() {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(model.talk.name),
+          backgroundColor: _talkHeaderContainerColor(model.talk),
+        ),
+        body: TalkDetailWidget(
+          talk: model.talk,
+          onRatingChanged: (newTalkRating) => model.rateTalk(newTalkRating),
+        ));
   }
 
   Color _talkHeaderContainerColor(Talk talk) {
@@ -79,20 +78,5 @@ class _TalkDetailScreenState extends MvpState<TalkDetailScreen, _ViewStates>
       case Track.MAKER:
         return Styles.trackMaker;
     }
-  }
-
-  @override
-  void showLoading() {
-    rebuild(_ViewStates.LOADING_TALK_DETAIL);
-  }
-
-  @override
-  void showTalkDetail() {
-    rebuild(_ViewStates.SHOW_TALK_DETAIL);
-  }
-
-  @override
-  void showError() {
-    rebuild(_ViewStates.SHOW_ERROR_TALK_DETAIL);
   }
 }
