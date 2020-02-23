@@ -20,7 +20,7 @@ dependencies:
   smooth_star_rating: ^1.0.1
   url_launcher: ^4.0.2
   transparent_image: ^0.1.0
-  cached_network_image: ^1.0.0
+  cached_network_image: ^2.0.0
   rxdart: ^0.21.0
   json_annotation: ^2.0.0
   http: 0.12.0
