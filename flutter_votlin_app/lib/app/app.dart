@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_votlin_app/app/styles/styles.dart';
 import 'package:flutter_votlin_app/app/ui/splash/splash_screen.dart';
-import 'package:flutter_votlin_app/core/injection/injector.dart';
+import 'package:flutter_votlin_app/app/injection/injector.dart';
 
 class MyApp extends StatelessWidget {
   static init() async {

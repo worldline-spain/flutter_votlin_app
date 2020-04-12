@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter_votlin_app/core/injection/injector.dart';
+import 'package:flutter_votlin_app/app/injection/injector.dart';
 import 'package:flutter_votlin_app/core/config/config.dart';
 import 'package:flutter_votlin_app/features/talks/models.dart';
 import 'package:flutter_votlin_app/app/ui/talks/talks_model.dart';

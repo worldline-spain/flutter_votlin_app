@@ -11,7 +11,6 @@ class TalksScreen extends StatefulWidget {
 }
 
 class _TalksScreenState extends StreamBuilderState<TalksScreen, TalksModel> {
-
   _TalksScreenState(TalksModel model) : super(model);
 
   @override
@@ -45,6 +44,7 @@ class _TalksScreenState extends StreamBuilderState<TalksScreen, TalksModel> {
                   case TalksState.SHOW_TALKS:
                     return stateShowTalks();
                 }
+                return Container();
               }),
         ));
   }
@@ -61,7 +61,7 @@ class _TalksScreenState extends StreamBuilderState<TalksScreen, TalksModel> {
     return TabBarView(
       children: <Widget>[
         TalkListWidget(
-            talkList: model.alltalks,
+            talkList: model.allTalks,
             onRefresh: () => model.onTrackSelected(Track.ALL)),
         TalkListWidget(
             talkList: model.businessTalks,

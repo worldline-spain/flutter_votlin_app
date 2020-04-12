@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_votlin_app/core/config/config.dart';
-import 'package:flutter_votlin_app/core/injection/injector.dart';
+import 'package:flutter_votlin_app/app/injection/injector.dart';
 import 'package:flutter_votlin_app/features/talks/models.dart';
 import 'package:flutter_votlin_app/app/ui/talk_detail/talk_detail_model.dart';
 import 'package:mock_web_server/mock_web_server.dart';
