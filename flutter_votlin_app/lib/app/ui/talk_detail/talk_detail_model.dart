@@ -1,8 +1,7 @@
-import 'package:flutter_votlin_app/core/injection/injector.dart';
+import 'package:flutter_votlin_app/app/injection/injector.dart';
 import 'package:flutter_votlin_app/core/stream_builder/stream_builder_pattern.dart';
 import 'package:flutter_votlin_app/features/talks/models.dart';
-import 'package:flutter_votlin_app/features/talks/interactor/get_talk_detail_use_case.dart';
-import 'package:flutter_votlin_app/features/talks/interactor/rate_talk_use_case.dart';
+import 'package:flutter_votlin_app/features/talks/repositories.dart';
 
 enum TalkDetailState {
   LOADING_TALK_DETAIL,
@@ -11,15 +10,13 @@ enum TalkDetailState {
 }
 
 class TalkDetailModel extends UiModel<TalkDetailState> {
-  GetTalkDetailUseCase getTalkDetailUseCase;
-  RateTalkUseCase rateTalkUseCase;
+  TalksRepository talksRepository;
 
   Talk talk;
   TalkRating talkRating;
 
   TalkDetailModel() {
-    this.getTalkDetailUseCase = GetTalkDetailUseCase(Injector.talksRepository);
-    this.rateTalkUseCase = RateTalkUseCase(Injector.talksRepository);
+    this.talksRepository = Injector.talksRepository;
   }
 
   @override
@@ -28,18 +25,13 @@ class TalkDetailModel extends UiModel<TalkDetailState> {
   }
 
   void getTalkDetail(Talk talk) {
-    getTalkDetailUseCase.execute(
-      params: talk,
-      onData: (response) {
-        print('onData');
-        this.talk = response.talk;
-
+    execute(
+      talksRepository.getTalkById(talk.id),
+      onData: (talk) {
+        this.talk = talk;
         show(TalkDetailState.SHOW_TALK_DETAIL);
       },
-      onDone: () => print('onDone'),
       onError: (error) {
-        print('onError');
-
         show(TalkDetailState.SHOW_ERROR_TALK_DETAIL);
       },
     );
@@ -49,12 +41,11 @@ class TalkDetailModel extends UiModel<TalkDetailState> {
     this.talk.rating = talkRating;
     show(TalkDetailState.SHOW_TALK_DETAIL);
 
-    rateTalkUseCase.execute(
-      params: talkRating,
+    execute(
+      talksRepository.rateTalk(talkRating),
       onData: (success) {
         print('onData' + " updateRatingTalk success:" + success.toString());
       },
-      onDone: () => print('onDone'),
       onError: (error) {
         print('onError');
       },
@@ -62,8 +53,5 @@ class TalkDetailModel extends UiModel<TalkDetailState> {
   }
 
   @override
-  void destroy() {
-    getTalkDetailUseCase.unsubscribe();
-    rateTalkUseCase.unsubscribe();
-  }
+  void destroy() {}
 }

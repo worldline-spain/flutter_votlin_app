@@ -41,6 +41,7 @@ class _TalkDetailScreenState
             case TalkDetailState.SHOW_TALK_DETAIL:
               return stateShowTalkDetail();
           }
+          return Container();
         });
   }
 
