@@ -25,13 +25,10 @@ void main() {
   test('get all talks success', () async {
     _givenAllTalksResponses(mockServer);
 
-    expect(talksModel.uiStateStream(),
-        emitsInOrder({CurrentState.LOADING_TALKS, CurrentState.SHOW_TALKS}));
-
     talksModel.getAllTalks();
     await _wait();
 
-    expect(talksModel.alltalks, hasLength(38));
+    expect(talksModel.allTalks, hasLength(38));
     expect(talksModel.businessTalks, hasLength(13));
     expect(talksModel.developmentTalks, hasLength(15));
     expect(talksModel.makerTalks, hasLength(6));
@@ -40,35 +37,26 @@ void main() {
   test('get all talks error', () async {
     mockServer.enqueue(httpCode: 401);
 
-    expect(
-        talksModel.uiStateStream(),
-        emitsInOrder(
-            {CurrentState.LOADING_TALKS, CurrentState.SHOW_ERROR_TALKS}));
-
     talksModel.getAllTalks();
     await _wait();
+
+    expect(talksModel.currentState, TalksState.SHOW_ERROR_TALKS);
   });
 
   test('get talks from track ALL success', () async {
     mockServer.enqueue(
         body: File('test/server_responses/all_talks.json').readAsStringSync());
 
-    expect(talksModel.uiStateStream(),
-        emitsInOrder({CurrentState.LOADING_TALKS, CurrentState.SHOW_TALKS}));
-
     talksModel.onTrackSelected(Track.ALL);
     await _wait();
 
-    expect(talksModel.alltalks, isNotEmpty);
+    expect(talksModel.allTalks, isNotEmpty);
   });
 
   test('get talks from track BUSINESS success', () async {
     mockServer.enqueue(
         body: File('test/server_responses/business_talks.json')
             .readAsStringSync());
-
-    expect(talksModel.uiStateStream(),
-        emitsInOrder({CurrentState.LOADING_TALKS, CurrentState.SHOW_TALKS}));
 
     talksModel.onTrackSelected(Track.BUSINESS);
     await _wait();
@@ -81,9 +69,6 @@ void main() {
         body: File('test/server_responses/business_talks.json')
             .readAsStringSync());
 
-    expect(talksModel.uiStateStream(),
-        emitsInOrder({CurrentState.LOADING_TALKS, CurrentState.SHOW_TALKS}));
-
     talksModel.onTrackSelected(Track.DEVELOPMENT);
     await _wait();
 
@@ -94,9 +79,6 @@ void main() {
     mockServer.enqueue(
         body:
             File('test/server_responses/maker_talks.json').readAsStringSync());
-
-    expect(talksModel.uiStateStream(),
-        emitsInOrder({CurrentState.LOADING_TALKS, CurrentState.SHOW_TALKS}));
 
     talksModel.onTrackSelected(Track.MAKER);
     await _wait();
@@ -113,39 +95,7 @@ void main() {
   test('get talks from track throws an error', () async {
     mockServer.enqueue(httpCode: 401);
 
-    expect(
-        talksModel.uiStateStream(),
-        emitsInOrder(
-            {CurrentState.LOADING_TALKS, CurrentState.SHOW_ERROR_TALKS}));
-
     talksModel.onTrackSelected(Track.ALL);
-  });
-
-  test('get all talks cancelled when presenter is destroyed', () async {
-    _givenAllTalksResponses(mockServer);
-
-    expect(
-        talksModel.uiStateStream(), emitsInOrder({CurrentState.LOADING_TALKS}));
-
-    talksModel.getAllTalks();
-    talksModel.destroy();
-    await _wait();
-
-    expect(talksModel.alltalks, isEmpty);
-  });
-
-  test('on track selected cancelled when presenter is destroyed', () async {
-    mockServer.enqueue(
-        body: File('test/server_responses/all_talks.json').readAsStringSync());
-
-    expect(
-        talksModel.uiStateStream(), emitsInOrder({CurrentState.LOADING_TALKS}));
-
-    talksModel.onTrackSelected(Track.ALL);
-    talksModel.destroy();
-    await _wait();
-
-    expect(talksModel.alltalks, isEmpty);
   });
 
   tearDownAll(() {

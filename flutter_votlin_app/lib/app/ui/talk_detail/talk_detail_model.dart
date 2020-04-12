@@ -1,5 +1,5 @@
 import 'package:flutter_votlin_app/app/injection/injector.dart';
-import 'package:flutter_votlin_app/core/stream_builder/stream_builder_pattern.dart';
+import 'package:flutter_votlin_app/core/viewmodel/view_model.dart';
 import 'package:flutter_votlin_app/features/talks/models.dart';
 import 'package:flutter_votlin_app/features/talks/repositories.dart';
 
@@ -9,7 +9,7 @@ enum TalkDetailState {
   SHOW_ERROR_TALK_DETAIL
 }
 
-class TalkDetailModel extends UiModel<TalkDetailState> {
+class TalkDetailModel extends ViewModel<TalkDetailState> {
   TalksRepository talksRepository;
 
   Talk talk;

@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter_votlin_app/app/injection/injector.dart';
-import 'package:flutter_votlin_app/core/stream_builder/stream_builder_pattern.dart';
+import 'package:flutter_votlin_app/core/viewmodel/view_model.dart';
 import 'package:flutter_votlin_app/features/talks/models.dart';
 import 'package:flutter_votlin_app/features/talks/repositories.dart';
 
 enum TalksState { LOADING_TALKS, SHOW_TALKS, SHOW_ERROR_TALKS }
 
-class TalksModel extends UiModel<TalksState> {
+class TalksModel extends ViewModel<TalksState> {
   TalksRepository talksRepository;
 
   List<Talk> allTalks = List();

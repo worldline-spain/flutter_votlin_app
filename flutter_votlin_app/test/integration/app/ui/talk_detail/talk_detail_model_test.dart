@@ -27,11 +27,6 @@ void main() {
     _givenTalkDetailResponse(mockServer);
     Talk givenTalk = Talk(id: 37);
 
-    expect(
-        model.uiStateStream(),
-        emitsInOrder(
-            {CurrentState.LOADING_TALK_DETAIL, CurrentState.SHOW_TALK_DETAIL}));
-
     model.getTalkDetail(givenTalk);
     await _wait();
 
@@ -48,28 +43,16 @@ void main() {
     mockServer.enqueue(httpCode: 401);
     Talk givenTalk = Talk(id: 37);
 
-    expect(
-        model.uiStateStream(),
-        emitsInOrder({
-          CurrentState.LOADING_TALK_DETAIL,
-          CurrentState.SHOW_ERROR_TALK_DETAIL
-        }));
-
     model.getTalkDetail(givenTalk);
+    await _wait();
+
+    expect(model.currentState, TalkDetailState.SHOW_ERROR_TALK_DETAIL);
   });
 
   test('rate talk success', () async {
     _givenTalkDetailResponse(mockServer);
     Talk givenTalk = Talk(id: 37);
     TalkRating givenTalkRating = TalkRating(talkId: 37, value: 4.0);
-
-    expect(
-        model.uiStateStream(),
-        emitsInOrder({
-          CurrentState.LOADING_TALK_DETAIL,
-          CurrentState.SHOW_TALK_DETAIL,
-          CurrentState.SHOW_TALK_DETAIL
-        }));
 
     model.getTalkDetail(givenTalk);
     await _wait();
