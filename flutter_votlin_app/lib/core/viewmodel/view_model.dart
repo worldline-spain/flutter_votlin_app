@@ -10,7 +10,7 @@ abstract class ViewModel<ST> extends ChangeNotifier {
     this.currentState = initialState();
   }
 
-  void show(ST newState) {
+  void setState(ST newState) {
     this.currentState = newState;
     notifyListeners();
   }

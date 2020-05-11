@@ -29,17 +29,17 @@ class TalkDetailModel extends ViewModel<TalkDetailState> {
       talksRepository.getTalkById(talk.id),
       onData: (talk) {
         this.talk = talk;
-        show(TalkDetailState.SHOW_TALK_DETAIL);
+        setState(TalkDetailState.SHOW_TALK_DETAIL);
       },
       onError: (error) {
-        show(TalkDetailState.SHOW_ERROR_TALK_DETAIL);
+        setState(TalkDetailState.SHOW_ERROR_TALK_DETAIL);
       },
     );
   }
 
   void rateTalk(TalkRating talkRating) {
     this.talk.rating = talkRating;
-    show(TalkDetailState.SHOW_TALK_DETAIL);
+    setState(TalkDetailState.SHOW_TALK_DETAIL);
 
     execute(
       talksRepository.rateTalk(talkRating),

@@ -28,16 +28,16 @@ class TalksModel extends ViewModel<TalksState> {
     execute(
       _getAllTalks(),
       onData: (success) {
-        show(TalksState.SHOW_TALKS);
+        setState(TalksState.SHOW_TALKS);
       },
       onError: (error) {
-        show(TalksState.SHOW_ERROR_TALKS);
+        setState(TalksState.SHOW_ERROR_TALKS);
       },
     );
   }
 
   void onTrackSelected(Track track) {
-    show(TalksState.LOADING_TALKS);
+    setState(TalksState.LOADING_TALKS);
 
     execute(
       _getTalksByTrack(track),
@@ -56,10 +56,10 @@ class TalksModel extends ViewModel<TalksState> {
             makerTalks = talkList;
             break;
         }
-        show(TalksState.SHOW_TALKS);
+        setState(TalksState.SHOW_TALKS);
       },
       onError: (error) {
-        show(TalksState.SHOW_ERROR_TALKS);
+        setState(TalksState.SHOW_ERROR_TALKS);
       },
     );
   }
