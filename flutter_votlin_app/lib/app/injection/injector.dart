@@ -2,13 +2,13 @@ import 'package:flutter_votlin_app/core/config/config.dart';
 import 'package:flutter_votlin_app/core/data/database/sqlite_helper.dart';
 import 'package:flutter_votlin_app/core/data/network/core_http_client.dart';
 import 'package:flutter_votlin_app/core/data/network/dart_http_client.dart';
-import 'package:flutter_votlin_app/features/talks/datasource/database/talks_db_datasource.dart';
-import 'package:flutter_votlin_app/features/talks/datasource/database/talks_mock_db_datasource.dart';
-import 'package:flutter_votlin_app/features/talks/datasource/mock/talks_mock_datasource.dart';
-import 'package:flutter_votlin_app/features/talks/datasource/network/talks_network_datasource.dart';
-import 'package:flutter_votlin_app/features/talks/datasource/talks_datasources.dart';
-import 'package:flutter_votlin_app/features/talks/datasource/talks_repository_impl.dart';
-import 'package:flutter_votlin_app/features/talks/repositories.dart';
+import 'package:flutter_votlin_app/data/talks/database/talks_db_datasource.dart';
+import 'package:flutter_votlin_app/data/talks/database/talks_mock_db_datasource.dart';
+import 'package:flutter_votlin_app/data/talks/mock/talks_mock_datasource.dart';
+import 'package:flutter_votlin_app/data/talks/network/talks_network_datasource.dart';
+import 'package:flutter_votlin_app/data/talks/talks_datasources.dart';
+import 'package:flutter_votlin_app/data/talks/talks_repository_impl.dart';
+import 'package:flutter_votlin_app/domain/repositories.dart';
 import 'package:get_it/get_it.dart';
 
 class Injector {
