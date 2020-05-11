@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_votlin_app/features/talks/models.dart';
-import 'package:flutter_votlin_app/app/ui/talk_detail/talk_detail_screen.dart';
-import 'package:flutter_votlin_app/app/ui/talks/talks_screen.dart';
+import 'package:flutter_votlin_app/domain/models.dart';
+import 'package:flutter_votlin_app/app/screens/talk_detail/talk_detail_screen.dart';
+import 'package:flutter_votlin_app/app/screens/talks/talks_screen.dart';
 
 class AppNavigator {
   static void goToTalks(context) {
