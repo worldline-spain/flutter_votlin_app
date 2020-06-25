@@ -14,19 +14,23 @@ import 'package:get_it/get_it.dart';
 
 class Injector {
   static final Injector _singleton = new Injector._internal();
-  GetIt _getIt;
+  GetIt _getItInstance;
 
   factory Injector() {
     return _singleton;
   }
 
   Injector._internal() {
-    _getIt = new GetIt();
+    _getItInstance = GetIt.instance;
+  }
+
+  static GetIt _getIt() {
+    return _singleton._getItInstance;
   }
 
   static init() {
-    _singleton._getIt.registerSingleton(_singleton._createSqliteHelper());
-    _singleton._getIt.registerSingleton(_singleton._createTalksRepository());
+    _getIt().registerSingleton(_singleton._createSqliteHelper());
+    _getIt().registerSingleton(_singleton._createTalksRepository());
   }
 
   SqliteHelper _createSqliteHelper() {
@@ -56,8 +60,7 @@ class Injector {
     );
   }
 
-  static SqliteHelper get dbHelper => _singleton._getIt<SqliteHelper>();
+  static SqliteHelper get dbHelper => _getIt()<SqliteHelper>();
 
-  static TalksRepository get talksRepository =>
-      _singleton._getIt<TalksRepository>();
+  static TalksRepository get talksRepository => _getIt()<TalksRepository>();
 }
