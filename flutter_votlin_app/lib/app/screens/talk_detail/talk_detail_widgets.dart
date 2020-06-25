@@ -36,7 +36,7 @@ class TalkDetailWidget extends StatelessWidget {
       child: Center(
         child: SmoothStarRating(
           allowHalfRating: false,
-          onRatingChanged: (value) {
+          onRated: (value) {
             this.onRatingChanged(TalkRating(talkId: talk.id, value: value));
           },
           starCount: 5,

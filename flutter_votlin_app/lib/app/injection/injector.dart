@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_votlin_app/core/config/config.dart';
 import 'package:flutter_votlin_app/core/data/database/sqlite_helper.dart';
 import 'package:flutter_votlin_app/core/data/network/core_http_client.dart';
+import 'package:flutter_votlin_app/core/data/network/dart_http_client.dart';
 import 'package:flutter_votlin_app/core/data/network/dio_http_client.dart';
 import 'package:flutter_votlin_app/data/talks/database/talks_db_datasource.dart';
 import 'package:flutter_votlin_app/data/talks/database/talks_mock_db_datasource.dart';
@@ -14,19 +15,23 @@ import 'package:get_it/get_it.dart';
 
 class Injector {
   static final Injector _singleton = new Injector._internal();
-  GetIt _getIt;
+  GetIt _getItInstance;
 
   factory Injector() {
     return _singleton;
   }
 
   Injector._internal() {
-    _getIt = new GetIt();
+    _getItInstance = GetIt.instance;
+  }
+
+  static GetIt _getIt() {
+    return _singleton._getItInstance;
   }
 
   static init() {
-    _singleton._getIt.registerSingleton(_singleton._createSqliteHelper());
-    _singleton._getIt.registerSingleton(_singleton._createTalksRepository());
+    _getIt().registerSingleton(_singleton._createSqliteHelper());
+    _getIt().registerSingleton(_singleton._createTalksRepository());
   }
 
   SqliteHelper _createSqliteHelper() {
@@ -37,7 +42,7 @@ class Injector {
     TalksRemoteDataSource talksRemoteDataSource;
     if ((Config.flavor == Flavor.LOCALHOST_EMULATOR) ||
         (Config.flavor == Flavor.MOCK_WEBSERVER)) {
-      CoreHttpClient coreHttpClient = DioHttpClient(Dio());
+      CoreHttpClient coreHttpClient = DartHttpClient();
       talksRemoteDataSource = TalksNetworkDataSource(coreHttpClient);
     } else if (Config.flavor == Flavor.MOCK) {
       talksRemoteDataSource = TalksMockDataSource();
@@ -56,8 +61,7 @@ class Injector {
     );
   }
 
-  static SqliteHelper get dbHelper => _singleton._getIt<SqliteHelper>();
+  static SqliteHelper get dbHelper => _getIt()<SqliteHelper>();
 
-  static TalksRepository get talksRepository =>
-      _singleton._getIt<TalksRepository>();
+  static TalksRepository get talksRepository => _getIt()<TalksRepository>();
 }
