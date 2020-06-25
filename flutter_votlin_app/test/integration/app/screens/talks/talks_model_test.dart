@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter_votlin_app/app/injection/injector.dart';
 import 'package:flutter_votlin_app/core/config/config.dart';
 import 'package:flutter_votlin_app/domain/models.dart';
-import 'package:flutter_votlin_app/app/ui/talks/talks_model.dart';
+import 'package:flutter_votlin_app/app/screens/talks/talks_model.dart';
 import 'package:mock_web_server/mock_web_server.dart';
 import 'package:flutter_test/flutter_test.dart';
 

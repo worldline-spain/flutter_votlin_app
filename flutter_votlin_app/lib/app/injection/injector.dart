@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_votlin_app/core/config/config.dart';
 import 'package:flutter_votlin_app/core/data/database/sqlite_helper.dart';
 import 'package:flutter_votlin_app/core/data/network/core_http_client.dart';
+import 'package:flutter_votlin_app/core/data/network/dart_http_client.dart';
 import 'package:flutter_votlin_app/core/data/network/dio_http_client.dart';
 import 'package:flutter_votlin_app/data/talks/database/talks_db_datasource.dart';
 import 'package:flutter_votlin_app/data/talks/database/talks_mock_db_datasource.dart';
@@ -41,7 +42,7 @@ class Injector {
     TalksRemoteDataSource talksRemoteDataSource;
     if ((Config.flavor == Flavor.LOCALHOST_EMULATOR) ||
         (Config.flavor == Flavor.MOCK_WEBSERVER)) {
-      CoreHttpClient coreHttpClient = DioHttpClient(Dio());
+      CoreHttpClient coreHttpClient = DartHttpClient();
       talksRemoteDataSource = TalksNetworkDataSource(coreHttpClient);
     } else if (Config.flavor == Flavor.MOCK) {
       talksRemoteDataSource = TalksMockDataSource();
