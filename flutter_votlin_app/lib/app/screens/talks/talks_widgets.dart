@@ -107,9 +107,9 @@ class TalkListWidget extends StatelessWidget {
 
   Widget _speakerAvatar(Speaker speaker) {
     if (speaker.photoUrl.isEmpty) {
-      return Container(
-        width: 24.0,
-        height: 24.0,
+      return CircleAvatar(
+        radius: 24.0,
+        child: Text(speaker.avatarInitials()),
       );
     } else {
       return Center(

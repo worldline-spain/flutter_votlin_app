@@ -76,12 +76,9 @@ class TalkDetailWidget extends StatelessWidget {
 
   Widget _speakerAvatar(Speaker speaker) {
     if (speaker.photoUrl.isEmpty) {
-      return Center(
-        child: Container(
-          padding: EdgeInsets.only(top: 8.0),
-          width: 48.0,
-          height: 48.0,
-        ),
+      return CircleAvatar(
+        radius: 24.0,
+        child: Text(speaker.avatarInitials()),
       );
     } else {
       return Center(

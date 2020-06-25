@@ -60,4 +60,13 @@ class Speaker {
     this.bio,
     this.photoUrl,
   });
+
+  String avatarInitials() {
+    var fullNameArray = name.split(" ").take(2);
+    String initials = "";
+    for (var value in fullNameArray) {
+      initials = initials + value[0];
+    }
+    return initials;
+  }
 }

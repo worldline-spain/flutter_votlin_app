@@ -113,7 +113,7 @@ class SpeakerDto {
       linkedin: linkedin,
       name: name,
       bio: bio,
-      photoUrl: photoUrl,
+      photoUrl: "",
     );
   }
 }
