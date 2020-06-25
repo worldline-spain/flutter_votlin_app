@@ -1,16 +1,17 @@
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_votlin_app/core/data/network/core_http_client.dart';
-import 'package:http/http.dart' as http;
 
-class DartHttpClient implements CoreHttpClient {
-  DartHttpClient();
+class DioHttpClient implements CoreHttpClient {
+  final Dio dio;
+
+  DioHttpClient(this.dio);
 
   @override
   Future get(String url) async {
     final response =
-        await http.get(url).timeout(Duration(seconds: 10)).catchError((error) {
+        await dio.get(url).timeout(Duration(seconds: 10)).catchError((error) {
       String msg;
       if (error is TimeoutException) {
         msg = "Time out requesting $url";
@@ -21,7 +22,7 @@ class DartHttpClient implements CoreHttpClient {
       }
     });
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      return json.decode(response.body);
+      return response.data;
     } else {
       throw HttpClientException.message(
         "Invalid response status code requesting $url. Status code:" +
